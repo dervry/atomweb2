@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atom LED Light - Login</title>
+    <link rel="icon" href="logoatom.png" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #e0e0e0;
+        }
+
+        .login-container {
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 3rem;
+            max-width: 420px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(158, 158, 158, 0.3);
+            border: 2px solid #692c2c;
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-section h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 0.5rem;
+        }
+
+        .logo-section p {
+            color: #dc2626;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .welcome-text {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .welcome-text h2 {
+            color: #ffffff;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-text p {
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+
+        .google-btn {
+            width: 100%;
+            background: #ffffff;
+            color: #1a1a1a;
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .google-btn:hover {
+            background: #f3f4f6;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 73, 73, 0.4);
+        }
+
+        .google-btn img {
+            width: 20px;
+            height: 20px;
+        }
+
+        #loginMessage {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .security-note {
+            text-align: center;
+            margin-top: 2rem;
+            color: #6b7280;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+
+        .features {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #d1d5db;
+            font-size: 0.9rem;
+        }
+
+        .feature-icon {
+            color: #9e3939;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo-section">
+            <h1>ATOM</h1>
+            <p>LED Light & Hardware</p>
+        </div>
+
+        <div class="welcome-text">
+            <h2>Welcome Back</h2>
+            <p>Sign in to browse our hardware collection</p>
+        </div>
+
+        <button class="google-btn" id="google-sign-in">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+            <span>Continue with Google</span>
+        </button>
+
+        <p id="loginMessage"></p>
+
+        <div class="features">
+            <div class="feature-item">
+                <div class="feature-icon">✦</div>
+                <div>Browse quality LED light products</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">✦</div>
+                <div>Track your orders in real-time</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">✦</div>
+                <div>Secure checkout & delivery</div>
+            </div>
+        </div>
+ 
+        <div class="security-note">
+            Your data is protected with Google authentication
+        </div>
+    </div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup } 
+from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBONPnKu3Wy_BuWBRbqAUUoWFAaAf2ARX0",
+  authDomain: "atomled-980bf.firebaseapp.com",
+  projectId: "atomled-980bf",
+  storageBucket: "atomled-980bf.firebasestorage.app",
+  messagingSenderId: "485284066305",
+  appId: "1:485284066305:web:25d2483329b86099e67c00",
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+const googleBtn = document.getElementById("google-sign-in");
+const message = document.getElementById("loginMessage");
+
+googleBtn.addEventListener("click", () => {
+  signInWithPopup(auth, provider)
+    .then((result) => {
+
+      const user = result.user;
+      const adminEmail = "nimuelthomas@gmail.com";
+
+      if (user.email === adminEmail) {
+        window.location.href = "admin.html";
+      } else {
+        window.location.href = "homepage.html";
+      }
+
+    })
+    .catch((error) => {
+      message.style.color = "red";
+      message.innerText = error.message;
+    });
+});
+</script>
+</body>
+</html>
